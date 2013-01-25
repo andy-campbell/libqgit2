@@ -41,7 +41,7 @@ namespace LibQGit2
             /**
              * Create a new Git index entry object
              */
-            explicit QGitIndexEntry(git_index_entry *data);
+            explicit QGitIndexEntry(const git_index_entry *data);
 
             /**
              * Copy constructor

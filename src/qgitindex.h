@@ -129,7 +129,7 @@ namespace LibQGit2
              * @param position position of the entry to remove
              * @throws QGitException
              */
-            void remove(int position);
+            void remove(const QString &path, int position);
 
             /**
              * Insert an entry into the index.

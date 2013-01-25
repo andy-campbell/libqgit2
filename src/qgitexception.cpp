@@ -26,10 +26,7 @@ namespace LibQGit2
 
 QGitException::QGitException(int error)
 {
-    if (git_lasterror())
-        m = git_lasterror();
-    else
-        m = git_strerror(error);
+    m = giterr_last()->message;
 }
 
 QGitException::~QGitException() throw()

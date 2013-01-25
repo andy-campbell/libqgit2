@@ -49,7 +49,7 @@ bool QGitTreeEntry::isNull() const
 
 unsigned int QGitTreeEntry::attributes() const
 {
-    return git_tree_entry_attributes(d);
+    return git_tree_entry_filemode(d);
 }
 
 const QString QGitTreeEntry::name() const
@@ -65,7 +65,7 @@ QGitOId QGitTreeEntry::oid() const
 QGitObject QGitTreeEntry::toObject(const QGitRepository& repo)
 {
     git_object *obj;
-    qGitThrow(git_tree_entry_2object(&obj, repo.data(), d));
+    qGitThrow(git_tree_entry_to_object(&obj, repo.data(), d));
     return QGitObject(obj);
 }
 

@@ -59,7 +59,7 @@ void QGitIndex::open(const QString& indexPath)
 QGitOId QGitIndex::createTree()
 {
     QGitOId oid;
-    qGitThrow(git_tree_create_fromindex(oid.data(), data()));
+    qGitThrow(git_index_write_tree(oid.data(), data()));
     return oid;
 }
 
@@ -85,22 +85,22 @@ int QGitIndex::find(const QString& path)
 
 void QGitIndex::add(const QString& path, int stage)
 {
-    qGitThrow(git_index_add(data(), QFile::encodeName(path), stage));
+    qGitThrow(git_index_add_bypath(data(), QFile::encodeName(path)));
 }
 
-void QGitIndex::remove(int position)
+void QGitIndex::remove(const QString& path, int position)
 {
-    qGitThrow(git_index_remove(data(), position));
+    qGitThrow(git_index_remove(data(), QFile::encodeName(path), position));
 }
 
 void QGitIndex::insert(const QGitIndexEntry &source_entry)
 {
-    qGitThrow(git_index_append2(data(), source_entry.data()));
+    qGitThrow(git_index_add(data(), source_entry.data()));
 }
 
 QGitIndexEntry QGitIndex::get(int n) const
 {
-    return QGitIndexEntry(git_index_get(data(), n));
+    return QGitIndexEntry(git_index_get_byindex(data(), n));
 }
 
 unsigned int QGitIndex::entryCount() const

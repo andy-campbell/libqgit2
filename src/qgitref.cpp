@@ -46,12 +46,12 @@ QGitRef::~QGitRef()
 
 QGitOId QGitRef::oid() const
 {
-    return QGitOId(git_reference_oid(m_reference));
+    return QGitOId(git_reference_target(m_reference));
 }
 
 QString QGitRef::target() const
 {
-    return QString::fromUtf8(git_reference_target(m_reference));
+    return QString::fromUtf8(git_reference_symbolic_target(m_reference));
 }
 
 bool QGitRef::isDirect() const
@@ -83,12 +83,12 @@ QGitRepository QGitRef::owner() const
 
 void QGitRef::setTarget(const QString& target)
 {
-    qGitThrow(git_reference_set_target(m_reference, QFile::encodeName(target)));
+    qGitThrow(git_reference_symbolic_set_target(m_reference, QFile::encodeName(target)));
 }
 
 void QGitRef::setOId(const QGitOId& oid)
 {
-    qGitThrow(git_reference_set_oid(m_reference, oid.constData()));
+    qGitThrow(git_reference_set_target(m_reference, oid.constData()));
 }
 
 bool QGitRef::isNull() const

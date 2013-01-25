@@ -192,14 +192,14 @@ QGitObject QGitRepository::lookupAny(const QGitOId &oid) const
 QGitRef QGitRepository::createRef(const QString& name, const QGitOId& oid, bool overwrite)
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_create_oid(&ref, data(), QFile::encodeName(name), oid.constData(), overwrite));
+    qGitThrow(git_reference_create(&ref, data(), QFile::encodeName(name), oid.constData(), overwrite));
     return QGitRef(ref);
 }
 
 QGitRef QGitRepository::createSymbolicRef(const QString& name, const QString& target, bool overwrite)
 {
     git_reference *ref = 0;
-    qGitThrow(git_reference_create_symbolic(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
+    qGitThrow(git_reference_symbolic_create(&ref, data(), QFile::encodeName(name), QFile::encodeName(target), overwrite));
     return QGitRef(ref);
 }
 
@@ -251,7 +251,7 @@ void QGitRepository::deleteTag(const QString& name)
 QGitOId QGitRepository::createBlobFromFile(const QString& path)
 {
     QGitOId oid;
-    qGitThrow(git_blob_create_fromfile(oid.data(), data(), QFile::encodeName(path)));
+    qGitThrow(git_blob_create_fromworkdir(oid.data(), data(), QFile::encodeName(path)));
     return oid;
 }
 
@@ -279,7 +279,7 @@ QStringList QGitRepository::listReferences() const
 {
     QStringList list;
     git_strarray refs;
-    qGitThrow(git_reference_listall( &refs, data(), GIT_REF_LISTALL));
+    qGitThrow(git_reference_list( &refs, data(), GIT_REF_LISTALL));
     for (size_t i = 0; i < refs.count; ++i)
     {
         list << QString(refs.strings[i]);

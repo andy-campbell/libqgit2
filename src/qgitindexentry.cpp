@@ -27,9 +27,9 @@
 namespace LibQGit2
 {
 
-QGitIndexEntry::QGitIndexEntry(git_index_entry *data)
-    : d(data)
+QGitIndexEntry::QGitIndexEntry(const git_index_entry *data)
 {
+    d = (git_index_entry*)data;
 }
 
 QGitIndexEntry::QGitIndexEntry(const QGitIndexEntry& other)

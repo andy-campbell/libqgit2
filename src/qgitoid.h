@@ -21,11 +21,12 @@
 #define LIBQGIT2_OID_H
 
 #include "libqgit2_export.h"
+#include <git2/oid.h>
 
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
 
-typedef struct _git_oid git_oid;
+//typedef struct _git_oid git_oid;
 
 namespace LibQGit2
 {
