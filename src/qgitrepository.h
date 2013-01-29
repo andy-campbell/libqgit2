@@ -371,6 +371,14 @@ namespace LibQGit2
             QStringList listReferences() const;
 
             /**
+             * Create a list with all branches in the Repository.
+             *
+             * @brief showAllBranches
+             * @throws QGitException
+             */
+            QStringList showAllBranches () const;
+
+            /**
              * Get the object database behind a Git repository
              *
              * @return a pointer to the object db
@@ -390,9 +398,20 @@ namespace LibQGit2
             git_repository* data() const;
             const git_repository* constData() const;
 
-        private:
+            /**
+             * @brief branches The callback function for showAllBranches
+             * @param branch_name - name of a branches
+             * @param branch_type - type of the branch
+             */
+            void branches(const char *branch_name, git_branch_t branch_type);
+    private:
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;
+
+            /*
+             * A temporary variable that is used for showAllBranches
+             */
+            QMap<QString,git_branch_t> repoBranches;
     };
 
     /**@}*/

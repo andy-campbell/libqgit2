@@ -40,6 +40,9 @@
 #include <QtCore/QVector>
 #include <QtCore/QStringList>
 
+#include <QtDebug>
+#include <functional>
+
 namespace {
 void do_not_free(git_repository*) {}
 }
@@ -285,6 +288,40 @@ QStringList QGitRepository::listReferences() const
         list << QString(refs.strings[i]);
     }
     git_strarray_free(&refs);
+    return list;
+}
+
+void QGitRepository::branches(const char *branch_name, git_branch_t branch_type)
+{
+    // Do something
+    repoBranches.insert(branch_name, branch_type);
+}
+
+extern "C" int branchesCallBack(const char *branch_name, git_branch_t branch_type,
+                                void *payload)
+{
+    reinterpret_cast<QGitRepository*> (payload)->branches(branch_name, branch_type);
+
+    // we want to continue looping so return 0
+    return 0;
+}
+
+QStringList QGitRepository::showAllBranches() const
+{
+    QStringList list;
+
+    qGitThrow(git_branch_foreach(data(), GIT_BRANCH_LOCAL, branchesCallBack,(void*)this));
+
+    qGitThrow(git_branch_foreach(data(), GIT_BRANCH_REMOTE, branchesCallBack,(void*)this));
+
+    QMap<QString, git_branch_t>::const_iterator i = repoBranches.cbegin();
+    while (i != repoBranches.constEnd())
+    {
+        list.append(i.key());
+         ++i;
+    }
+
+    repoBranches.clear();
     return list;
 }
 
