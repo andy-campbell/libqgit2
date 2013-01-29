@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_OID_H
 #define LIBQGIT2_OID_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 #include <git2/oid.h>
 
 #include <QtCore/QString>

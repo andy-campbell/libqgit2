@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_DATABASE_H
 #define LIBQGIT2_DATABASE_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 
 #include "qgitdatabasebackend.h"
 #include "qgitoid.h"

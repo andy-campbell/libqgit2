@@ -17,14 +17,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <qgitrepository.h>
-#include <qgitcommit.h>
-#include <qgitconfig.h>
-#include <qgittag.h>
-#include <qgittree.h>
-#include <qgitblob.h>
-#include <qgitsignature.h>
-#include <qgitexception.h>
+#include "qgitrepository.h"
+#include "qgitcommit.h"
+#include "qgitconfig.h"
+#include "qgittag.h"
+#include "qgittree.h"
+#include "qgitblob.h"
+#include "qgitsignature.h"
+#include "qgitexception.h"
 
 #include <git2/errors.h>
 #include <git2/repository.h>

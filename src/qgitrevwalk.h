@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_REVWALK_H
 #define LIBQGIT2_REVWALK_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 
 struct git_revwalk;
 

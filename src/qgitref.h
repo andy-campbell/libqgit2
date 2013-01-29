@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_REF_H
 #define LIBQGIT2_REF_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 
 #include <QtCore/QString>
 

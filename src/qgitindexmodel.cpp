@@ -19,7 +19,7 @@
 
 #include "qgitindexmodel.h"
 
-#include <qgitindexentry.h>
+#include "qgitindexentry.h"
 
 namespace LibQGit2
 {

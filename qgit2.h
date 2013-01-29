@@ -31,7 +31,7 @@
 
 #include "src/qgitrepository.h"
 #include "src/qgitrevwalk.h"
-#include "src/qgitrefs.h"
+#include "src/qgitref.h"
 
 #include "src/qgitobject.h"
 #include "src/qgitblob.h"

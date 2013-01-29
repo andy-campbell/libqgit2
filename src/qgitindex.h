@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_INDEX_H
 #define LIBQGIT2_INDEX_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 
 #include <QtCore/QSharedPointer>
 

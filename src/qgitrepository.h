@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_REPOSITORY_H
 #define LIBQGIT2_REPOSITORY_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 
 #include "qgitdatabase.h"
 #include "qgitobject.h"
@@ -29,6 +29,10 @@
 
 #include <QtCore/QSharedPointer>
 #include <QtCore/QStringList>
+#include <QMap>
+
+#include <git2/branch.h>
+
 
 struct git_repository;
 

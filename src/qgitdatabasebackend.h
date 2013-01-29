@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_DATABASEBACKEND_H
 #define LIBQGIT2_DATABASEBACKEND_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 
 #include <QtCore/QString>
 

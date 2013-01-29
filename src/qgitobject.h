@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_OBJECT_H
 #define LIBQGIT2_OBJECT_H
 
-#include "libqgit2_export.h"
+#include "../libqgit2_export.h"
 
 #include <QtCore/QString>
 #include <QtCore/QDateTime>
