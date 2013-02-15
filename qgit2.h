@@ -38,6 +38,7 @@
 #include "src/qgitcommit.h"
 #include "src/qgittag.h"
 #include "src/qgittree.h"
+#include "src/qgittreeentry.h"
 
 #include "src/qgitindex.h"
 

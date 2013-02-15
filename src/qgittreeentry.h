@@ -20,8 +20,6 @@
 #ifndef LIBQGIT2_TREEENTRY_H
 #define LIBQGIT2_TREEENTRY_H
 
-#include "libqgit2_export.h"
-
 struct git_tree_entry;
 
 namespace LibQGit2
