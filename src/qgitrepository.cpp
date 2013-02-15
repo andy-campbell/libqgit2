@@ -306,13 +306,11 @@ extern "C" int branchesCallBack(const char *branch_name, git_branch_t branch_typ
     return 0;
 }
 
-QStringList QGitRepository::showAllBranches() const
+QStringList QGitRepository::showAllBranches(branchType type) const
 {
     QStringList list;
 
-    qGitThrow(git_branch_foreach(data(), GIT_BRANCH_LOCAL, branchesCallBack,(void*)this));
-
-    qGitThrow(git_branch_foreach(data(), GIT_BRANCH_REMOTE, branchesCallBack,(void*)this));
+    qGitThrow(git_branch_foreach(data(), type, branchesCallBack,(void*)this));
 
     QMap<QString, git_branch_t>::const_iterator i = repoBranches.cbegin();
     while (i != repoBranches.constEnd())
@@ -321,7 +319,6 @@ QStringList QGitRepository::showAllBranches() const
          ++i;
     }
 
-    repoBranches.clear();
     return list;
 }
 

@@ -370,13 +370,20 @@ namespace LibQGit2
              */
             QStringList listReferences() const;
 
+
+            enum branchType
+            {
+                QGIT_LOCAL = 1,
+                QGIT_REMOTE = 2
+            };
+
             /**
              * Create a list with all branches in the Repository.
              *
              * @brief showAllBranches
              * @throws QGitException
              */
-            QStringList showAllBranches () const;
+            QStringList showAllBranches (branchType type) const;
 
             /**
              * Get the object database behind a Git repository
