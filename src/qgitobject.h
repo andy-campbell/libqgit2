@@ -36,6 +36,7 @@ namespace LibQGit2
     class QGitTag;
     class QGitTree;
     class QGitBlob;
+    class QGitDiff;
 
     /**
      * @brief Wrapper class for git_object.

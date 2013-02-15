@@ -50,3 +50,9 @@ SOURCES += src/qgitblob.cpp \
            src/qgittag.cpp \
            src/qgittree.cpp \
            src/qgittreeentry.cpp \
+
+HEADERS += \
+    src/qgitdiff.h
+
+SOURCES += \
+    src/qgitdiff.cpp

@@ -41,4 +41,6 @@
 
 #include "src/qgitindex.h"
 
+#include "src/qgitdiff.h"
+
 #endif
