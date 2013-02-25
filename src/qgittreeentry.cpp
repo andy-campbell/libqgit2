@@ -25,6 +25,9 @@
 
 #include <git2/tree.h>
 
+#include <iostream>
+#include <stdio.h>
+
 namespace LibQGit2
 {
 
@@ -54,7 +57,11 @@ unsigned int QGitTreeEntry::attributes() const
 
 const QString QGitTreeEntry::name() const
 {
-    return QFile::decodeName( git_tree_entry_name(d) );
+    const char *name = git_tree_entry_name(d);
+
+    std::cout << name << std::endl;
+    printf ("%s\n", name);
+    return QString (git_tree_entry_name(d));//QFile::decodeName( git_tree_entry_name(d) );
 }
 
 QGitOId QGitTreeEntry::oid() const

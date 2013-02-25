@@ -26,6 +26,8 @@
 #include <QtCore/QFile>
 
 #include <git2/tree.h>
+#include <git2/index.h>
+
 
 namespace LibQGit2
 {
@@ -62,6 +64,32 @@ QGitTreeEntry QGitTree::entryByName(const QString& fileName) const
 QGitTreeEntry QGitTree::entryByIndex(int idx) const
 {
     return QGitTreeEntry(git_tree_entry_byindex(data(), idx));
+}
+
+extern "C" int addEntriesCallBack(const char *root, const git_tree_entry *entry, void *payload)
+{
+
+    reinterpret_cast<QGitTree*> (payload)->addEntry(root, entry);
+    // we want to continue looping so return 0
+    return 0;
+}
+
+
+void QGitTree::addEntry(const char* root, const git_tree_entry *entry)
+{
+    git_otype type = git_tree_entry_type(entry);
+    if (type = GIT_OBJ_BLOB)
+    {
+        QString path = QString(root) + QString (git_tree_entry_name(entry));
+        entries.push_back(path);
+    }
+}
+
+const QStringList QGitTree::getAllEntries()
+{
+    git_tree_walk(data(), GIT_TREEWALK_PRE, addEntriesCallBack, this);
+
+    return entries;
 }
 
 git_tree* QGitTree::data() const

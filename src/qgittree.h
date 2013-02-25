@@ -23,8 +23,11 @@
 #include "qgitobject.h"
 
 #include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QPair>
 
 struct git_tree;
+struct git_tree_entry;
 
 namespace LibQGit2
 {
@@ -87,8 +90,26 @@ namespace LibQGit2
              */
             QGitTreeEntry entryByIndex(int idx) const;
 
+            /**
+             * Creates a list of all of the entries in the tree
+             * this include subfolders.
+             * @param getAllEntries
+             * @return  a list of tree entries; the list is empty if nothing is found
+             */
+            const QStringList getAllEntries();
+
             git_tree* data() const;
             const git_tree* constData() const;
+
+            /**
+             * This is not an api call this is part of the callback for the
+             * git_tree_walk
+             * @param root The location from the root directory
+             * @param entry An entry in the tree
+             */
+            void addEntry(const char *root, const git_tree_entry *entry);
+    private:
+            QStringList entries;
     };
 
     /**@}*/
