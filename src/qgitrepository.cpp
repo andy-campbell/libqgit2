@@ -82,11 +82,23 @@ void QGitRepository::init(const QString& path, bool isBare)
     d = ptr_type(repo, git_repository_free);
 }
 
+
 void QGitRepository::open(const QString& path)
 {
     d.clear();
     git_repository *repo = 0;
-    qGitThrow(git_repository_open(&repo, QFile::encodeName(path)));
+    QDir folder(path);
+
+    do
+    {
+        if (folder.entryList(QDir::AllDirs | QDir::Hidden).contains(".git"))
+        {
+            break;
+        }
+    }
+    while (folder.cdUp());
+
+    qGitThrow(git_repository_open(&repo, QFile::encodeName(folder.absolutePath())));
     d = ptr_type(repo, git_repository_free);
 }
 
