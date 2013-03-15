@@ -58,12 +58,14 @@ size_t QGitTree::entryCount()
 
 QGitTreeEntry QGitTree::entryByName(const QString& fileName) const
 {
-    return QGitTreeEntry(git_tree_entry_byname(data(), QFile::encodeName(fileName)));
+    git_tree_entry *entry;
+    git_tree_entry_bypath(&entry, data(), QFile::encodeName(fileName));
+    return QGitTreeEntry(entry ,true);
 }
 
 QGitTreeEntry QGitTree::entryByIndex(int idx) const
 {
-    return QGitTreeEntry(git_tree_entry_byindex(data(), idx));
+    return QGitTreeEntry(git_tree_entry_byindex(data(), idx), false);
 }
 
 extern "C" int addEntriesCallBack(const char *root, const git_tree_entry *entry, void *payload)

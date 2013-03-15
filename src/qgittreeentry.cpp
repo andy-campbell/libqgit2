@@ -31,8 +31,8 @@
 namespace LibQGit2
 {
 
-QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry)
-    : d(treeEntry)
+QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry, bool freeData)
+    : d(treeEntry) , freeEntry(freeData)
 {
 }
 
@@ -43,6 +43,10 @@ QGitTreeEntry::QGitTreeEntry(const QGitTreeEntry& other)
 
 QGitTreeEntry::~QGitTreeEntry()
 {
+    if (freeEntry)
+    {
+        git_tree_entry_free (d);
+    }
 }
 
 bool QGitTreeEntry::isNull() const
