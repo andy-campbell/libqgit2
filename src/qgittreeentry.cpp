@@ -37,7 +37,7 @@ QGitTreeEntry::QGitTreeEntry(const git_tree_entry *treeEntry, bool freeData)
 }
 
 QGitTreeEntry::QGitTreeEntry(const QGitTreeEntry& other)
-    : d(other.d)
+    : d(other.d), freeEntry(other.freeEntry)
 {
 }
 
