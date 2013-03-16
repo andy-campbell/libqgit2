@@ -83,7 +83,7 @@ void QGitDiff::addPatchLines(const git_diff_delta *delta, const char *line, char
     //assumes that this is called after hunk call back so this will
     // just append to the end of the Last map that was created by addHunk
     QString fileName(delta->new_file.path);
-    QString currentLine = QString(line);
+    QString currentLine(line);
     QString realLine = currentLine.left(lineLen);
 
     QString currentFilePatch = deltas[QString(delta->new_file.path)];
@@ -99,8 +99,10 @@ void QGitDiff::addPatchHunks(const git_diff_delta *delta, const char *header, in
 {
     QString fileName(delta->new_file.path);
     QString currentFilePatch = deltas[QString(delta->new_file.path)];
+    QString currentHeader(header);
+    QString realHeader = currentHeader.left(headerLen);
 
-    currentFilePatch.append(header);
+    currentFilePatch.append(realHeader);
 
     deltas[fileName] = currentFilePatch;
 }
@@ -108,7 +110,7 @@ void QGitDiff::addPatchHunks(const git_diff_delta *delta, const char *header, in
 void QGitDiff::addFileChanged(const git_diff_delta *delta)
 {
     fileList.push_back(QString::fromLocal8Bit(delta->new_file.path));
-    deltas.insert(QString(delta->new_file.path), QString(" "));
+    deltas.insert(QString(delta->new_file.path), QString());
 }
 
 QStringList QGitDiff::getFileChangedList()
