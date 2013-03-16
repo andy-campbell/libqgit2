@@ -45,7 +45,8 @@ QGitTreeEntry::~QGitTreeEntry()
 {
     if (freeEntry)
     {
-        git_tree_entry_free (d);
+        // unconst data so it can be freed
+        git_tree_entry_free ((git_tree_entry*)d);
     }
 }
 
@@ -61,11 +62,7 @@ unsigned int QGitTreeEntry::attributes() const
 
 const QString QGitTreeEntry::name() const
 {
-    const char *name = git_tree_entry_name(d);
-
-    std::cout << name << std::endl;
-    printf ("%s\n", name);
-    return QString (git_tree_entry_name(d));//QFile::decodeName( git_tree_entry_name(d) );
+    return QString (git_tree_entry_name(d));
 }
 
 QGitOId QGitTreeEntry::oid() const
