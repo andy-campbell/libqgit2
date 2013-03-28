@@ -49,11 +49,20 @@ namespace LibQGit2
 
          bool diffWorkingDir();
 
+         /**
+          * @brief print This function returns a QString representation of
+          * 'git diff --patch'.
+          * @return A QString.
+          */
+         QString print();
+
          // public so they can be called from the c callback code
          void addFileDiff(const char *delta);
          void addFileChanged(const git_diff_delta *delta);
          void addPatchHunks(const git_diff_delta *delta, const char *header, int headerLen);
          void addPatchLines(const git_diff_delta *delta, const char *line, char usage, int lineLen);
+         void saveFullPatch(const char *line);
+
     private:
          QStringList fileList;
          // Maps filename to patch hunk
@@ -61,6 +70,7 @@ namespace LibQGit2
          // Repo that contains the commits
          QGitRepository _repo;
          git_diff_list *diff;
+         QString patch;
 
     };
 }

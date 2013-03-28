@@ -55,6 +55,15 @@ extern "C" int addPatchLinesCallBack(const git_diff_delta *delta, const git_diff
     return 0;
 }
 
+extern "C" int printCB(  const git_diff_delta *delta, const git_diff_range *range,
+                         char usage, const char *line, size_t line_len, void *payload)
+{
+    reinterpret_cast<QGitDiff*> (payload)->saveFullPatch(line);
+
+    return 0;
+}
+
+
 /**
  * @brief QGitDiff::QGitDiff
  * @param repo the repository which contains the commits to the
@@ -157,6 +166,18 @@ QStringList QGitDiff::getFileChangedList()
 QString QGitDiff::getDeltasForFile(const QString &file)
 {
     return deltas[file];
+}
+
+void QGitDiff::saveFullPatch(const char *line)
+{
+    patch += QString(line);
+}
+
+QString QGitDiff::print()
+{
+    git_diff_print_patch(diff, printCB, this);
+
+    return patch;
 }
 
 }
