@@ -37,13 +37,17 @@ namespace LibQGit2
     class LIBQGIT2_EXPORT QGitDiff : public QGitObject
     {
     public:
-         QGitDiff(QGitRepository repo, QGitCommit commitFrom, QGitCommit commitTo);
+         QGitDiff(QGitRepository repo);
 
          virtual ~QGitDiff();
 
          QStringList getFileChangedList();
 
          QString getDeltasForFile(const QString &file);
+
+         void diffCommits(QGitCommit commitFrom, QGitCommit commitTo);
+
+         bool diffWorkingDir();
 
          // public so they can be called from the c callback code
          void addFileDiff(const char *delta);
@@ -54,6 +58,8 @@ namespace LibQGit2
          QStringList fileList;
          // Maps filename to patch hunk
          QMap<QString, QString> deltas;
+         // Repo that contains the commits
+         QGitRepository _repo;
          git_diff_list *diff;
 
     };

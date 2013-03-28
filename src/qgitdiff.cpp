@@ -56,26 +56,62 @@ extern "C" int addPatchLinesCallBack(const git_diff_delta *delta, const git_diff
 }
 
 /**
- * @brief QGitDiff::QGitDiff gets the differences between oid1 and oid2
- * @param oid1 - sha of commit to diff from
- * @param oid2 - sha of commit to diff to
+ * @brief QGitDiff::QGitDiff
+ * @param repo the repository which contains the commits to the
  */
-QGitDiff::QGitDiff(QGitRepository repo, QGitCommit commitFrom, QGitCommit commitTo)
+QGitDiff::QGitDiff(QGitRepository repo)
+    : _repo (repo)
+{
+}
+
+/**
+ * @brief QGitDiff::diffCommits
+ * @param commitFrom the commit to diff from
+ * @param commitTo the commit to diff to
+ */
+void QGitDiff::diffCommits(QGitCommit commitFrom, QGitCommit commitTo)
 {
     const git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
 
-    git_diff_tree_to_tree (&diff, repo.data(),commitFrom.tree().data(), commitTo.tree().data(), &opts);
+    git_diff_tree_to_tree (&diff, _repo.data(), commitFrom.tree().data(), commitTo.tree().data(), &opts);
 
 
     git_diff_foreach (diff, fileDiffCallBack, addPatchHunksCallBack, addPatchLinesCallBack, this);
 
-
 }
+
 
 
 QGitDiff::~QGitDiff()
 {
     git_diff_list_free (diff);
+}
+
+/**
+ * @brief QGitDiff::diffWorkingDir gets the changes from head that are in the
+ * working directory. If there is no changes then false is returned. If there
+ * are changes then are obtained through calls to getDeltasForFile for the deltas
+ * and getFileChangedList for the file list and true is returned.
+ * @return
+ */
+bool QGitDiff::diffWorkingDir()
+{
+    const git_diff_options opts = GIT_DIFF_OPTIONS_INIT;
+
+    QGitCommit commit = _repo.lookupCommit(_repo.head().oid());
+
+    // get the diff
+    git_diff_tree_to_workdir (&diff, _repo.data(), commit.tree().data() , &opts);
+
+    // get the diff in a useful form
+    git_diff_foreach (diff, fileDiffCallBack, addPatchHunksCallBack, addPatchLinesCallBack, this);
+
+    if (fileList.isEmpty())
+    {
+        return false;
+    }
+
+    return true;
 }
 
 void QGitDiff::addPatchLines(const git_diff_delta *delta, const char *line, char usage, int lineLen)
