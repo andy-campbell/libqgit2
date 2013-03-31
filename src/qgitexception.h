@@ -20,7 +20,7 @@
 #ifndef LIBQGIT2_EXCEPTION_H
 #define LIBQGIT2_EXCEPTION_H
 
-#include "libqgit2_export.h"
+#include <QByteArray>
 
 namespace LibQGit2
 {
@@ -30,7 +30,7 @@ namespace LibQGit2
      * @ingroup LibQGit2
      * @{
      */
-    class LIBQGIT2_EXPORT QGitException : public std::exception
+    class QGitException : public std::exception
     {
         public:
             QGitException(int error);
