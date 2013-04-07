@@ -131,31 +131,51 @@ void QGitDiff::addPatchLines(const git_diff_delta *delta, const char *line, char
     QString currentLine(line);
     QString realLine = currentLine.left(lineLen);
 
-    QString currentFilePatch = deltas[QString(delta->new_file.path)];
+    patchInfo info = deltas[QString(delta->new_file.path)];
+    QString currentFilePatch = info.patch;
 
     currentFilePatch.append(usage);
     currentFilePatch.append(realLine);
 
-    deltas[fileName] = currentFilePatch;
+    if (usage == '+')
+    {
+        //std::cout << "addition is hit " <<  info.additions << std::endl;
+        info.additions = info.additions + 1;
+    }
+
+    if (usage == '-')
+    {
+        //std::cout << "deletions is hit " <<  info.deletions << std::endl;
+        info.deletions = info.deletions + 1;
+    }
+
+    deltas[fileName].patch = currentFilePatch;
+    deltas[fileName].additions = info.additions;
+    deltas[fileName].deletions = info.deletions;
 }
 
 
 void QGitDiff::addPatchHunks(const git_diff_delta *delta, const char *header, int headerLen)
 {
     QString fileName(delta->new_file.path);
-    QString currentFilePatch = deltas[QString(delta->new_file.path)];
+    QString currentFilePatch = deltas[QString(delta->new_file.path)].patch;
     QString currentHeader(header);
     QString realHeader = currentHeader.left(headerLen);
 
     currentFilePatch.append(realHeader);
 
-    deltas[fileName] = currentFilePatch;
+    deltas[fileName].patch = currentFilePatch;
 }
 
 void QGitDiff::addFileChanged(const git_diff_delta *delta)
 {
     fileList.push_back(QString::fromLocal8Bit(delta->new_file.path));
-    deltas.insert(QString(delta->new_file.path), QString());
+    patchInfo info;
+    info.patch = QString();
+    info.additions = 0;
+    info.deletions = 0;
+
+    deltas.insert(QString(delta->new_file.path), info);
 }
 
 QStringList QGitDiff::getFileChangedList()
@@ -165,7 +185,7 @@ QStringList QGitDiff::getFileChangedList()
 
 QString QGitDiff::getDeltasForFile(const QString &file)
 {
-    return deltas[file];
+    return deltas[file].patch;
 }
 
 void QGitDiff::saveFullPatch(const char *line)
@@ -180,4 +200,51 @@ QString QGitDiff::print()
     return patch;
 }
 
+QString QGitDiff::getDiffString(int additions, int deletions)
+{
+    QString diffStat;
+
+    for (int i = 0; i < additions; i++)
+    {
+        diffStat = diffStat + "+";
+    }
+
+    for (int i = 0; i < deletions; i++)
+    {
+        diffStat = diffStat + "-";
+    }
+
+    return diffStat;
+}
+
+QString QGitDiff::diffStats()
+{
+    QString stats;
+
+    int totalAdditions = 0;
+    int totalDeletions = 0;
+
+    // check to make sure diff has been populated
+    if (diff == NULL)
+    {
+        return stats;
+    }
+
+    foreach (QString file, fileList)
+    {
+        patchInfo info = deltas[file];
+
+
+        totalAdditions += info.additions;
+        totalDeletions += info.deletions;
+
+        stats.append(" " + file + "\t|    " + getDiffString(info.additions, info.deletions) + "\n");
+    }
+    stats.append(" " + QString::number(fileList.count()));
+    stats.append(" file changed, " + QString::number(totalAdditions));
+    stats.append(" insertions(+), " + QString::number(totalDeletions));
+    stats.append(" deletions(-)\n");
+
+    return stats;
+}
 }

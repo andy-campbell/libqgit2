@@ -63,10 +63,34 @@ namespace LibQGit2
          void addPatchLines(const git_diff_delta *delta, const char *line, char usage, int lineLen);
          void saveFullPatch(const char *line);
 
+         /**
+          * @brief diffStats This function generates a string that is equivlent to running
+          * the command 'git diff --stats'. Makes the assumption that a diff has already occured
+          * before calling this function. If it has not then an empty string is returned.
+          * @return A string containing diff stats.
+          */
+         QString diffStats();
+
     private:
+         struct patchInfo
+         {
+             QString patch;
+             int additions;
+             int deletions;
+         };
+
+         /**
+          * @brief getDiffString helper function to print the +++--- for the diff stats
+          * @param additions number of '+' to put into the string
+          * @param deletions number of '-' to put into the string
+          * @return a string which contains '+' for each addition and a '-' for each
+          * deletion.
+          */
+         QString getDiffString(int additions, int deletions);
+
          QStringList fileList;
          // Maps filename to patch hunk
-         QMap<QString, QString> deltas;
+         QMap<QString, patchInfo> deltas;
          // Repo that contains the commits
          QGitRepository _repo;
          git_diff_list *diff;
