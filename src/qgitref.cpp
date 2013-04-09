@@ -83,12 +83,18 @@ QGitRepository QGitRef::owner() const
 
 void QGitRef::setTarget(const QString& target)
 {
-    qGitThrow(git_reference_symbolic_set_target(m_reference, QFile::encodeName(target)));
+    git_reference *out;
+    qGitThrow(git_reference_symbolic_set_target(&out, m_reference, QFile::encodeName(target)));
+
+    m_reference = out;
 }
 
 void QGitRef::setOId(const QGitOId& oid)
 {
-    qGitThrow(git_reference_set_target(m_reference, oid.constData()));
+    git_reference *out;
+    qGitThrow(git_reference_set_target(&out, m_reference, oid.constData()));
+
+    m_reference = out;
 }
 
 bool QGitRef::isNull() const

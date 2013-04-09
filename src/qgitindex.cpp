@@ -78,9 +78,13 @@ void QGitIndex::write()
     qGitThrow(git_index_write(data()));
 }
 
-int QGitIndex::find(const QString& path)
+size_t QGitIndex::find(const QString& path)
 {
-    return git_index_find(data(), QFile::encodeName(path));
+    size_t pos;
+
+    git_index_find(&pos, data(), QFile::encodeName(path));
+
+    return pos;
 }
 
 void QGitIndex::add(const QString& path, int stage)

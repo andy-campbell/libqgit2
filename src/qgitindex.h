@@ -112,7 +112,7 @@ namespace LibQGit2
              * @param path path to search
              * @return an index >= 0 if found, -1 otherwise
              */
-            int find(const QString& path);
+            size_t find(const QString& path);
 
             /**
              * Add or update an index entry from a file in disk.
