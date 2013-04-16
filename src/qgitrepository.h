@@ -407,10 +407,30 @@ namespace LibQGit2
 
             /**
              * @brief branches The callback function for showAllBranches
+             *
              * @param branch_name - name of a branches
              * @param branch_type - type of the branch
              */
             void branches(const char *branch_name, git_branch_t branch_type);
+
+            /**
+             * @brief createBranch Creates a git branch
+             *
+             * @param branchName Name of the branch to create
+             * @param commit Commit from which the branch will take place on
+             * @param overwrite If there is already a branch with branchName it will
+             * be removed and put onto the commit given
+             * @return
+             */
+            QGitRef createBranch(QString branchName, QGitCommit *commit, bool overwrite = true);
+
+            /**
+             * @brief deleteBranch Given a branch name and if it is a local or remote branch
+             * this routine will delete a branch
+             *
+             * @param branchName name of the branch to delete
+             */
+            void deleteBranch(QString branchName);
     private:
             typedef QSharedPointer<git_repository> ptr_type;
             ptr_type d;

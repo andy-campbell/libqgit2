@@ -303,6 +303,21 @@ QStringList QGitRepository::listReferences() const
     return list;
 }
 
+QGitRef QGitRepository::createBranch(QString branchName, QGitCommit *commit, bool overwrite)
+{
+    git_reference *newBranch;
+    qGitThrow (git_branch_create(&newBranch, data(), QFile::encodeName(branchName), commit->data(), overwrite));
+    return QGitRef(newBranch);
+}
+
+void QGitRepository::deleteBranch (QString branchName)
+{
+    git_reference *ref;
+    qGitThrow(git_reference_lookup(&ref, data(), QFile::encodeName(branchName)));
+
+    qGitThrow(git_branch_delete(ref));
+}
+
 void QGitRepository::branches(const char *branch_name, git_branch_t branch_type)
 {
     // Do something
@@ -317,6 +332,7 @@ extern "C" int branchesCallBack(const char *branch_name, git_branch_t branch_typ
     // we want to continue looping so return 0
     return 0;
 }
+
 
 QStringList QGitRepository::showAllBranches(branchType type) const
 {
